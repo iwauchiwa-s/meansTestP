@@ -36,15 +36,20 @@ meansTestP <- function(av1, sd1, nd1, av2, sd2, nd2){
     txj <- 0 # insignificant
   }
 
+  # x-axix settings
+  xmn <- min(c(av1,av2))-max(c(sd1,sd2))*4
+  xmx <- max(c(av1,av2))+max(c(sd1,sd2))*4
+
   n <- 1000
-  x1 <- seq(0, 100, length=n)
+  x1 <- seq(xmn, xmx, length=n)
   mx1 <- max( dnorm(x1,av1,sd1) )
   mx2 <- max( dnorm(x1,av2,sd2) )
   mx <- max(mx1,mx2) * 1.1
 
+
   # draw the normal distributions
-  curve(dnorm(x,av1,sd1),0,100,col = "blue",lwd=1,xlab="", ylab="", ylim=c(0,mx))
-  curve(dnorm(x,av2,sd2),0,100,add = TRUE, col = "red",lwd=1)
+  curve(dnorm(x,av1,sd1),xmn,xmx,col = "blue",lwd=1,xlab="", ylab="", ylim=c(0,mx))
+  curve(dnorm(x,av2,sd2),xmn,xmx,add = TRUE, col = "red",lwd=1)
   legend("topleft",
          legend=c("1", "2"),
          lty=c(1,1),
