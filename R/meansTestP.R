@@ -1,0 +1,55 @@
+#' @title Significance test for difference between 2 mean values
+#' @description \code{meansTestP} statistical test for mean values
+#'
+#' @importFrom stats pt
+#' @importFrom stats qt
+#' @importFrom stats dnorm
+#' @importFrom graphics curve
+#' @importFrom graphics legend
+#' @param av1 mean value of group 1
+#' @param sd1 standard deviation of group 1
+#' @param nd1 number of group 1
+#' @param av2 mean value of group 2
+#' @param sd2 standard deviation of group 2
+#' @param nd2 number of group 2
+#' @return Deviation Test
+#' @export
+#' @examples
+#' # meansTestP(60, 10, 20, 55, 15, 25)
+
+meansTestP <- function(av1, sd1, nd1, av2, sd2, nd2){
+  dav <- abs(av1-av2)
+  var1 <- sd1^2
+  var2 <- sd2^2
+  sdpool <- sqrt ( ( nd1*var1 + nd2*var2) / (nd1+nd2) )
+  cohen_d <- dav/sdpool
+  dof <- round((var1/nd1+var2/nd2)^2/(var1^2/nd1^2/(nd1-1)+var2^2/nd2^2/(nd2-1)))
+  t <- (abs(av1-av2))/sqrt(var1/nd1+var2/nd2)
+  pv <- pt(-t,df=dof)*2
+  vpool <- ((nd1-1)*var1+(nd2-1)*var2)/(nd1+nd2-2)
+  cl_l <- (av2-av1)-qt(0.975,nd1+nd2-2)*sqrt(vpool*(1/nd1+1/nd2))
+  cl_u <- (av2-av1)+qt(0.975,nd1+nd2-2)*sqrt(vpool*(1/nd1+1/nd2))
+  if (pv <= 0.05){
+    txj <- 1 # significant
+  }
+  else{
+    txj <- 0 # insignificant
+  }
+
+  n <- 1000
+  x1 <- seq(0, 100, length=n)
+  mx1 <- max( dnorm(x1,av1,sd1) )
+  mx2 <- max( dnorm(x1,av2,sd2) )
+  mx <- max(mx1,mx2) * 1.1
+
+  # draw the normal distributions
+  curve(dnorm(x,av1,sd1),0,100,col = "blue",lwd=3,xlab="", ylab="", ylim=c(0,mx))
+  curve(dnorm(x,av2,sd2),0,100,add = TRUE, col = "red",lwd=3)
+  legend("topleft",
+         legend=c("1", "2"),
+         lty=c(1,1),
+         col=c("red", "blue")
+  )
+  return(list(Deviation=dav, Cohens_d=cohen_d, t_value=t, P_value=pv, lower_lim=cl_l, upper_lim=cl_u, judge=txj))
+}
+
