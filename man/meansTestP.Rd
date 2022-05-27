@@ -26,5 +26,5 @@ Deviation Test
 \code{meansTestP} statistical test for mean values
 }
 \examples{
-# meansTestP(60, 10, 20, 55, 15, 25)
+# meansTestP(50, 10, 20, 60, 15, 25)
 }

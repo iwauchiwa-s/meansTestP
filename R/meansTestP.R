@@ -15,7 +15,7 @@
 #' @return Deviation Test
 #' @export
 #' @examples
-#' # meansTestP(60, 10, 20, 55, 15, 25)
+#' # meansTestP(50, 10, 20, 60, 15, 25)
 
 meansTestP <- function(av1, sd1, nd1, av2, sd2, nd2){
   dav <- abs(av1-av2)
@@ -43,13 +43,12 @@ meansTestP <- function(av1, sd1, nd1, av2, sd2, nd2){
   mx <- max(mx1,mx2) * 1.1
 
   # draw the normal distributions
-  curve(dnorm(x,av1,sd1),0,100,col = "blue",lwd=3,xlab="", ylab="", ylim=c(0,mx))
-  curve(dnorm(x,av2,sd2),0,100,add = TRUE, col = "red",lwd=3)
+  curve(dnorm(x,av1,sd1),0,100,col = "blue",lwd=1,xlab="", ylab="", ylim=c(0,mx))
+  curve(dnorm(x,av2,sd2),0,100,add = TRUE, col = "red",lwd=1)
   legend("topleft",
          legend=c("1", "2"),
          lty=c(1,1),
-         col=c("red", "blue")
+         col=c("blue", "red")
   )
   return(list(Deviation=dav, Cohens_d=cohen_d, t_value=t, P_value=pv, lower_lim=cl_l, upper_lim=cl_u, judge=txj))
 }
-
