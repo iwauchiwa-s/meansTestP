@@ -22,7 +22,9 @@ meansTestP <- function(av1, sd1, nd1, av2, sd2, nd2){
   var1 <- sd1^2
   var2 <- sd2^2
   sdpool <- sqrt ( ( nd1*var1 + nd2*var2) / (nd1+nd2) )
+  sdpool2 <- sqrt((nd1 * var1 + nd2 * var2) / (nd1 + nd2 -2))
   cohen_d <- dav/sdpool
+  hedges_g <-  dav / sdpool2
   dof <- round((var1/nd1+var2/nd2)^2/(var1^2/nd1^2/(nd1-1)+var2^2/nd2^2/(nd2-1)))
   t <- (abs(av1-av2))/sqrt(var1/nd1+var2/nd2)
   pv <- pt(-t,df=dof)*2
@@ -55,5 +57,5 @@ meansTestP <- function(av1, sd1, nd1, av2, sd2, nd2){
          lty=c(1,1),
          col=c("blue", "red")
   )
-  return(list(Deviation=dav, Cohens_d=cohen_d, t_value=t, P_value=pv, lower_lim=cl_l, upper_lim=cl_u, judge=txj))
+  return(list(Deviation=dav, Cohens_d=cohen_d, hedges_g=hedges_g, t_value=t, P_value=pv, lower_lim=cl_l, upper_lim=cl_u, judge=txj))
 }
